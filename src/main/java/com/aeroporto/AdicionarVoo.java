@@ -17,7 +17,7 @@ public class AdicionarVoo extends JFrame {
   setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
   getContentPane().setBackground(cor.getAzulFundo());
 
-  Heder h = new Heder(titulo, this);
+  new Heder(titulo, this);
 
   JPanel formularioCadastroVoo = new JPanel(new FlowLayout(FlowLayout.LEFT));
   formularioCadastroVoo.setPreferredSize(new Dimension(350, 150));

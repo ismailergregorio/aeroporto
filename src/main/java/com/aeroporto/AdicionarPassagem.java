@@ -17,7 +17,7 @@ public class AdicionarPassagem extends JFrame {
   setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
   getContentPane().setBackground(cor.getAzulFundo());
 
-  Heder h = new Heder(titulo, this);
+  new Heder(titulo, this);
 
   JPanel PaineSelecaoVoo = new JPanel(new FlowLayout(FlowLayout.LEFT));
   PaineSelecaoVoo.setPreferredSize(new Dimension(350, 210));
