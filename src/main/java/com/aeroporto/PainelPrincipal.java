@@ -102,12 +102,19 @@ public class PainelPrincipal extends JFrame {
         // Botões dentro do painel cinza
         JButton btnAddVoo = new JButton("Add Voo");
 
-        btnAddVoo.addActionListener(e ->{
+        btnAddVoo.addActionListener(e -> {
             abrirTela(new AdicionarVoo());
         });
 
         JButton btnAddPassagem = new JButton("Com Psg");
+
+        btnAddPassagem.addActionListener(e -> {
+            abrirTela(new AdicionarPassagem());
+        });
         JButton btnAprova = new JButton("Aprovar");
+        btnAprova.addActionListener(e -> {
+            abrirTela(new AprovarPassagem());
+        });
 
         jPanelbtnAdminstrativo.add(btnAddVoo);
         jPanelbtnAdminstrativo.add(btnAddPassagem);

@@ -9,7 +9,14 @@ public class Colors {
  private Color vermelho = new Color(230, 100, 100);
  private Color cinza = new Color(210, 210, 210);
  private Color cinzaEscuro = new Color(153, 153, 153);
+ private Color branco = new Color(255, 255, 255);
  
+ public Color getBranco() {
+  return branco;
+ }
+ public void setBranco(Color branco) {
+  this.branco = branco;
+ }
  public Color getAzulFundo() {
   return azulFundo;
  }
