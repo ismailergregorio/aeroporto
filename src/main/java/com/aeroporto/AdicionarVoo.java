@@ -51,7 +51,6 @@ public class AdicionarVoo extends JFrame {
         // statusPanel.setBackground(azulFundo);
 
         JLabel textDisponivel = new JLabel("Disponível:");
-        Dados a = new Dados();
 
         JLabel Disponivel = new JLabel(Integer.toString(voos.listarVoosDisponivel()));
         JLabel textIndisponivel = new JLabel("Indisponível:");

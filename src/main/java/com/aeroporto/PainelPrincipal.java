@@ -4,7 +4,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class PainelPrincipal extends JFrame {
     Colors cor = new Colors();
@@ -113,7 +112,7 @@ public class PainelPrincipal extends JFrame {
         JButton btnAddPassagem = new JButton("Com Psg");
 
         btnAddPassagem.addActionListener(e -> {
-            abrirTela(new AdicionarPassagem());
+            abrirTela(new AdicionarPassagem(voos));
         });
         JButton btnAprova = new JButton("Aprovar");
         btnAprova.addActionListener(e -> {
