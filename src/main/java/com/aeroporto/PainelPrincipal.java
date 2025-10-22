@@ -1,12 +1,15 @@
 package com.aeroporto;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
+import java.util.ArrayList;
 
 public class PainelPrincipal extends JFrame {
     Colors cor = new Colors();
 
-    public PainelPrincipal() {
+    public PainelPrincipal(Dados voos) {
         setTitle("Painel de Voo");
         setSize(400, 500);
         setLocationRelativeTo(null);
@@ -51,6 +54,7 @@ public class PainelPrincipal extends JFrame {
 
         JLabel textDisponivel = new JLabel("Disponível:");
         JLabel Disponivel = new JLabel("0");
+        Disponivel.setText(Integer.toString(voos.listarVoosDisponivel()));
         JLabel textIndisponivel = new JLabel("Indisponível:");
         JLabel Indisponivel = new JLabel("0");
 
@@ -103,7 +107,7 @@ public class PainelPrincipal extends JFrame {
         JButton btnAddVoo = new JButton("Add Voo");
 
         btnAddVoo.addActionListener(e -> {
-            abrirTela(new AdicionarVoo());
+            abrirTela(new AdicionarVoo(voos));
         });
 
         JButton btnAddPassagem = new JButton("Com Psg");
@@ -131,9 +135,33 @@ public class PainelPrincipal extends JFrame {
         jPanelVoo.setLayout(new BoxLayout(jPanelVoo, BoxLayout.Y_AXIS));
         jPanelVoo.setPreferredSize(new Dimension(350, 300));
         jPanelVoo.setMaximumSize(new Dimension(350, 300));
-        jPanelVoo.setBackground(cor.getCinza());
+        jPanelVoo.setBackground(cor.getBranco());
         jPanelVoo.setOpaque(true);
         jPanelVoo.setAlignmentX(Component.CENTER_ALIGNMENT); // centraliza
+
+        for (Voo v : voos.listarVoos()) {
+            int acentosOcupado = 0;
+            int acentosDisponivel = v.getQuantidade();
+
+            for (String item : v.getAssentos()) {
+                if (item.equals("disponivel")) { // verifica o tipo desejado
+                    acentosOcupado++;
+                }
+            }
+
+            String t = "N°:" + v.getNumero() + " | Origem: " + v.getOrigem() + " | Destino: " + v.getDestino()
+                    + " | Acentos:" + acentosDisponivel + "/" + acentosOcupado;
+            JLabel text = new JLabel(t);
+            text.setBackground(cor.getCinza());
+            text.setPreferredSize(new Dimension(345, 23));
+            text.setMaximumSize(new Dimension(345, 23));
+            text.setOpaque(true);
+            text.setAlignmentX(Component.CENTER_ALIGNMENT);
+            text.setBorder(new EmptyBorder(0, 10, 0, 10));
+
+            jPanelVoo.add(Box.createVerticalStrut(3));
+            jPanelVoo.add(text);
+        }
 
         add(jPanelVoo);
         add(Box.createVerticalGlue()); // empurra o conteúdo para cima

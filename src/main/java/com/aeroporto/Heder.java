@@ -40,7 +40,9 @@ public class Heder{
   // statusPanel.setBackground(azulFundo);
 
   JLabel textDisponivel = new JLabel("Disponível:");
-  JLabel Disponivel = new JLabel("0");
+  Dados a = new Dados();
+  
+  JLabel Disponivel = new JLabel(Integer.toString(a.listarVoosDisponivel()));
   JLabel textIndisponivel = new JLabel("Indisponível:");
   JLabel Indisponivel = new JLabel("0");
 
