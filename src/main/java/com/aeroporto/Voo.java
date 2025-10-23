@@ -3,96 +3,100 @@ package com.aeroporto;
 import java.util.ArrayList;
 
 public class Voo {
- private String numero;
- private String origem;
- private String destino;
- private String horarioPartida;
- private String horarioChegada;
- private int quantidade;
- private ArrayList<String> assentos = new ArrayList<>();
+  private String numero;
+  private String origem;
+  private String destino;
+  private String horarioPartida;
+  private String horarioChegada;
+  private int quantidade;
+  private ArrayList<String> assentos = new ArrayList<>();
 
- public Voo(String numero, String origem, String destino, String horarioPartida, String horarioChegada,
-   int quantidade) {
-  this.numero = numero;
-  this.origem = origem;
-  this.destino = destino;
-  this.horarioPartida = horarioPartida;
-  this.horarioChegada = horarioChegada;
-  this.quantidade = quantidade;
+  public Voo() {
 
-  ArrayList<String> assentos = new ArrayList<>();
-  for (int x = 0; x < quantidade; x++) {
-   assentos.add("disponivel");
   }
-  this.assentos = assentos;
- }
 
- public String getNumero() {
-  return numero;
- }
+  public Voo(String numero, String origem, String destino, String horarioPartida, String horarioChegada,
+      int quantidade) {
+    this.numero = numero;
+    this.origem = origem;
+    this.destino = destino;
+    this.horarioPartida = horarioPartida;
+    this.horarioChegada = horarioChegada;
+    this.quantidade = quantidade;
 
- public void setNumero(String numero) {
-  this.numero = numero;
- }
+    ArrayList<String> assentos = new ArrayList<>();
+    for (int x = 0; x < quantidade; x++) {
+      assentos.add("disponivel");
+    }
+    this.assentos = assentos;
+  }
 
- public String getOrigem() {
-  return origem;
- }
+  public String getNumero() {
+    return numero;
+  }
 
- public void setOrigem(String origem) {
-  this.origem = origem;
- }
+  public void setNumero(String numero) {
+    this.numero = numero;
+  }
 
- public String getDestino() {
-  return destino;
- }
+  public String getOrigem() {
+    return origem;
+  }
 
- public void setDestino(String destino) {
-  this.destino = destino;
- }
+  public void setOrigem(String origem) {
+    this.origem = origem;
+  }
 
- public String getHorarioPartida() {
-  return horarioPartida;
- }
+  public String getDestino() {
+    return destino;
+  }
 
- public void setHorarioPartida(String horarioPartida) {
-  this.horarioPartida = horarioPartida;
- }
+  public void setDestino(String destino) {
+    this.destino = destino;
+  }
 
- public String getHorarioChegada() {
-  return horarioChegada;
- }
+  public String getHorarioPartida() {
+    return horarioPartida;
+  }
 
- public void setHorarioChegada(String horarioChegada) {
-  this.horarioChegada = horarioChegada;
- }
+  public void setHorarioPartida(String horarioPartida) {
+    this.horarioPartida = horarioPartida;
+  }
 
- public int getQuantidade() {
-  return quantidade;
- }
+  public String getHorarioChegada() {
+    return horarioChegada;
+  }
 
- public void setQuantidade(int quantidade) {
-  this.quantidade = quantidade;
- }
+  public void setHorarioChegada(String horarioChegada) {
+    this.horarioChegada = horarioChegada;
+  }
 
- public ArrayList<String> getAssentos() {
-  return assentos;
- }
+  public int getQuantidade() {
+    return quantidade;
+  }
 
- public void setAssentos(ArrayList<String> assentos) {
-  this.assentos = assentos;
- }
+  public void setQuantidade(int quantidade) {
+    this.quantidade = quantidade;
+  }
 
- @Override
- public String toString() {
-  return "Voo{" +
-    "numero='" + numero + '\'' +
-    ", origem='" + origem + '\'' +
-    ", destino='" + destino + '\'' +
-    ", horarioPartida='" + horarioPartida + '\'' +
-    ", horarioChegada='" + horarioChegada + '\'' +
-    ", quantidade=" + quantidade +
-    ", assentos=" + assentos +
-    '}';
- }
+  public ArrayList<String> getAssentos() {
+    return assentos;
+  }
+
+  public void setAssentos(ArrayList<String> assentos) {
+    this.assentos = assentos;
+  }
+
+  @Override
+  public String toString() {
+    return "Voo{" +
+        "numero='" + numero + '\'' +
+        ", origem='" + origem + '\'' +
+        ", destino='" + destino + '\'' +
+        ", horarioPartida='" + horarioPartida + '\'' +
+        ", horarioChegada='" + horarioChegada + '\'' +
+        ", quantidade=" + quantidade +
+        ", assentos=" + assentos +
+        '}';
+  }
 }

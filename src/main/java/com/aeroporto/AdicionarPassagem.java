@@ -2,10 +2,13 @@ package com.aeroporto;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class AdicionarPassagem extends JFrame {
     Colors cor = new Colors();
+    private String poutrona;
 
     public AdicionarPassagem(Dados voos) {
         String titulo = "Adcionar Passagem";
@@ -29,15 +32,16 @@ public class AdicionarPassagem extends JFrame {
 
         JLabel textVoo = new JLabel("Vool:");
         textVoo.setPreferredSize(new Dimension(100, 15));
-        // ArrayList<String> opcoes = new ArrayList<>();
-        // ArrayList<Voo> n = voos.getListaVoos();
-        String[] n = new String[voos.getListaVoos().size()];
-        ArrayList<Voo> v = new ArrayList<>();
-        for(int x = 0;x < voos.getListaVoos().size();x++){
-           n[x] = "0";
-        }
 
-        JComboBox<String> comboBox = new JComboBox<>(n);
+        String[] numeroDosVoos = new String[voos.getListaVoos().size()];
+        int controle = 0;
+        for (Voo v : voos.getListaVoos()) {
+            numeroDosVoos[controle] = v.getNumero();
+            controle++;
+        }
+        controle = 0;
+
+        JComboBox<String> comboBox = new JComboBox<>(numeroDosVoos);
         comboBox.setPreferredSize(new Dimension(220, 20));
         PaineSelecaoVoo.add(textVoo);
         PaineSelecaoVoo.add(comboBox);
@@ -64,17 +68,48 @@ public class AdicionarPassagem extends JFrame {
         testAcento.setPreferredSize(new Dimension(300, 15));
         PainelAcentos.add(testAcento);
 
-        for (int i = 0; i < 25; i++) {
-            JButton botao = new JButton(String.valueOf(i));
-            botao.setPreferredSize(new Dimension(50, 20));
-            botao.setFont(new Font("Arial", Font.PLAIN, 11));
-            PainelAcentos.add(botao);
-        }
+        ButtonGroup grupoAssentos = new ButtonGroup();
+
+        comboBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String vooSelecionado = (String) comboBox.getSelectedItem();
+
+                // Limpa os botões antigos antes de adicionar novos
+                PainelAcentos.removeAll();
+                Color corPadrao = UIManager.getColor("Panel.background");
+
+                for (Voo v : voos.getListaVoos()) {
+                    if (vooSelecionado.equals(v.getNumero())) {
+                        for (int x = 1; x <= v.getQuantidade(); x++) {
+                            JRadioButton assento = new JRadioButton(String.valueOf(x)); // final
+                            assento.setPreferredSize(new Dimension(60, 30));
+
+                            assento.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    System.out.println("Assento selecionado: " + assento.getText());
+                                    poutrona = (String) assento.getText();
+                                }
+                            });
+
+                            grupoAssentos.add(assento); // adiciona ao grupo
+                            PainelAcentos.add(assento);
+                        }
+                    }
+                }
+
+                // Atualiza o layout e redesenha
+                PainelAcentos.revalidate();
+                PainelAcentos.repaint();
+            }
+        });
+
         PaineSelecaoVoo.add(PainelAcentos);
         add(PaineSelecaoVoo);
         add(Box.createVerticalStrut(2));
 
-        JPanel PainelPassageiro = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel PainelPassageiro = new JPanel(new FlowLayout(
+                FlowLayout.LEFT));
         PainelPassageiro.setPreferredSize(new Dimension(350, 110));
         PainelPassageiro.setMaximumSize(new Dimension(350, 110));
         // PainelPassageiro.setBackground(cor.getCinzaEscuro());
@@ -89,7 +124,8 @@ public class AdicionarPassagem extends JFrame {
 
         JLabel labIdade = new JLabel("Idade:");
         labIdade.setPreferredSize(new Dimension(100, 15));
-        JSpinner numIdade = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 1));
+        JSpinner numIdade = new JSpinner(new SpinnerNumberModel(0, 0, 1000,
+                1));
         numIdade.setPreferredSize(new Dimension(200, 23));
         PainelPassageiro.add(labIdade);
         PainelPassageiro.add(numIdade);
@@ -115,10 +151,45 @@ public class AdicionarPassagem extends JFrame {
         JButton salvar = new JButton("Salvar");
         btnSalvarCancelar.add(salvar);
 
+        salvar.addActionListener(e -> {
+            String nome = textNome.getText();
+            String cpf = textCpf.getText();
+            int idade = (int) numIdade.getValue();
+            String email = textEmail.getText();
+            Voo voo =  new Voo();
+            for(Voo v : voos.getListaVoos()){
+                if(v.getNumero().equals(comboBox.getSelectedItem())){
+                    voo = v;
+                }
+            }
+
+            if (nome.isBlank() || cpf.isBlank() || idade <= 0 || email.isBlank()) {
+                JOptionPane.showMessageDialog(this,
+                        "Por favor, preencha todos os campos corretamente.",
+                        "Campos obrigatórios",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            Passageiro p = new Passageiro(voo,textNome.getText(), textCpf.getText(), (int) numIdade.getValue(),
+                    textEmail.getText(), poutrona);
+
+            System.out.println(p);
+        });
+
         JButton cancelar = new JButton("Cancelar");
         btnSalvarCancelar.add(cancelar);
         add(btnSalvarCancelar);
 
+        cancelar.addActionListener(e -> {
+            abrirTela(new PainelPrincipal(voos));
+        });
+
         // setVisible(true);
+    }
+
+    private void abrirTela(JFrame tela) {
+        dispose();
+        tela.setVisible(true);
     }
 }
