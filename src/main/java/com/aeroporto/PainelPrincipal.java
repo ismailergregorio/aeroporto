@@ -3,12 +3,20 @@ package com.aeroporto;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import com.aeroporto.Dados.Colors;
+import com.aeroporto.Dados.Dados;
+import com.aeroporto.Passagens.AdicionarPassagem;
+import com.aeroporto.Passagens.AprovarPassagem;
+import com.aeroporto.Passagens.CheckIn;
+import com.aeroporto.Voos.AdicionarVoo;
+import com.aeroporto.Voos.Voo;
+
 import java.awt.*;
 
 public class PainelPrincipal extends JFrame {
     Colors cor = new Colors();
 
-    public PainelPrincipal(Dados voos) {
+    public PainelPrincipal(Dados voos, Dados checkIn) {
         setTitle("Painel de Voo");
         setSize(400, 500);
         setLocationRelativeTo(null);
@@ -42,7 +50,7 @@ public class PainelPrincipal extends JFrame {
         PainelStatus.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
 
         // Imagem à esquerda
-        ImageIcon icone = new ImageIcon("src\\main\\java\\com\\aeroporto\\image.png");
+        ImageIcon icone = new ImageIcon("src\\main\\java\\com\\aeroporto\\Dados\\image.png");
         Image img = icone.getImage().getScaledInstance(90, 50, Image.SCALE_SMOOTH);
         JLabel labelImagem = new JLabel(new ImageIcon(img));
         PainelStatus.add(labelImagem, BorderLayout.WEST);
@@ -106,22 +114,29 @@ public class PainelPrincipal extends JFrame {
         JButton btnAddVoo = new JButton("Add Voo");
 
         btnAddVoo.addActionListener(e -> {
-            abrirTela(new AdicionarVoo(voos));
+            abrirTela(new AdicionarVoo(voos, checkIn));
         });
 
         JButton btnAddPassagem = new JButton("Com Psg");
 
         btnAddPassagem.addActionListener(e -> {
-            abrirTela(new AdicionarPassagem(voos));
+            abrirTela(new AdicionarPassagem(voos, checkIn));
         });
         JButton btnAprova = new JButton("Aprovar");
         btnAprova.addActionListener(e -> {
-            abrirTela(new AprovarPassagem());
+            abrirTela(new AprovarPassagem(voos, checkIn));
+        });
+
+        JButton btnCheckIn = new JButton("ChecIn");
+
+        btnCheckIn.addActionListener(e -> {
+            abrirTela(new CheckIn(voos, checkIn));
         });
 
         jPanelbtnAdminstrativo.add(btnAddVoo);
         jPanelbtnAdminstrativo.add(btnAddPassagem);
         jPanelbtnAdminstrativo.add(btnAprova);
+        jPanelbtnAdminstrativo.add(btnCheckIn);
 
         btnControleAdimistrativo.add(Box.createVerticalStrut(5));
         btnControleAdimistrativo.add(jPanelbtnAdminstrativo);

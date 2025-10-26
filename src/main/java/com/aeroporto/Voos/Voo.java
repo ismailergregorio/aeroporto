@@ -1,6 +1,10 @@
-package com.aeroporto;
+package com.aeroporto.Voos;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Stack;
+
+import com.aeroporto.Passagens.Passageiro;
 
 public class Voo {
   private String numero;
@@ -10,6 +14,16 @@ public class Voo {
   private String horarioChegada;
   private int quantidade;
   private ArrayList<String> assentos = new ArrayList<>();
+  private LinkedList<Passageiro> reservasPendentes = new LinkedList<>();
+  private Stack<Passageiro>checkIn = new Stack<>();
+
+  public Stack<Passageiro> getCheckIn() {
+    return checkIn;
+  }
+
+  public void setCheckIn(Stack<Passageiro> checkIn) {
+    this.checkIn = checkIn;
+  }
 
   public Voo() {
 
@@ -85,6 +99,19 @@ public class Voo {
 
   public void setAssentos(ArrayList<String> assentos) {
     this.assentos = assentos;
+  }
+
+  public LinkedList<Passageiro> getReservasPendentes() {
+    return reservasPendentes;
+  }
+
+  public void setReservasPendentes(LinkedList<Passageiro> reservasPendentes) {
+    this.reservasPendentes = reservasPendentes;
+  }
+
+  public void addPassagensPendentes(Passageiro p) {
+    reservasPendentes.add(p);
+
   }
 
   @Override

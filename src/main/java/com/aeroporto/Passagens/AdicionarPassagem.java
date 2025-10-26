@@ -1,8 +1,14 @@
-package com.aeroporto;
+package com.aeroporto.Passagens;
 
 import javax.swing.*;
+
+import com.aeroporto.Heder;
+import com.aeroporto.PainelPrincipal;
+import com.aeroporto.Dados.Colors;
+import com.aeroporto.Dados.Dados;
+import com.aeroporto.Voos.Voo;
+
 import java.awt.*;
-import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
@@ -10,7 +16,7 @@ public class AdicionarPassagem extends JFrame {
     Colors cor = new Colors();
     private String poutrona;
 
-    public AdicionarPassagem(Dados voos) {
+    public AdicionarPassagem(Dados voos, Dados checkIn) {
         String titulo = "Adcionar Passagem";
         setTitle(titulo);
         setSize(400, 500);
@@ -83,6 +89,9 @@ public class AdicionarPassagem extends JFrame {
                         for (int x = 1; x <= v.getQuantidade(); x++) {
                             JRadioButton assento = new JRadioButton(String.valueOf(x)); // final
                             assento.setPreferredSize(new Dimension(60, 30));
+                            if (v.getAssentos().get(x - 1) != "disponivel") {
+                                assento.setEnabled(false);
+                            }
 
                             assento.addActionListener(new ActionListener() {
                                 @Override
@@ -156,12 +165,7 @@ public class AdicionarPassagem extends JFrame {
             String cpf = textCpf.getText();
             int idade = (int) numIdade.getValue();
             String email = textEmail.getText();
-            Voo voo =  new Voo();
-            for(Voo v : voos.getListaVoos()){
-                if(v.getNumero().equals(comboBox.getSelectedItem())){
-                    voo = v;
-                }
-            }
+            Voo voo = new Voo();
 
             if (nome.isBlank() || cpf.isBlank() || idade <= 0 || email.isBlank()) {
                 JOptionPane.showMessageDialog(this,
@@ -170,11 +174,36 @@ public class AdicionarPassagem extends JFrame {
                         JOptionPane.WARNING_MESSAGE);
                 return;
             }
+            PainelAcentos.removeAll();
+            // encontra o voo selecionado
+            Voo vooSelecionado = null;
+            for (Voo v : voos.getListaVoos()) {
+                if (v.getNumero().equals(comboBox.getSelectedItem())) {
+                    vooSelecionado = v;
+                    break;
+                }
+            }
 
-            Passageiro p = new Passageiro(voo,textNome.getText(), textCpf.getText(), (int) numIdade.getValue(),
+            if (vooSelecionado != null) {
+                ArrayList<String> atualizacaoDeAssentos = vooSelecionado.getAssentos();
+                int numeroAssento = Integer.parseInt(poutrona);
+
+                // atualiza o nome no assento correspondente
+                if (numeroAssento > 0 && numeroAssento <= atualizacaoDeAssentos.size()) {
+                    atualizacaoDeAssentos.set(numeroAssento - 1, nome);
+                    vooSelecionado.setAssentos(atualizacaoDeAssentos);
+                    System.out.println("Assento " + numeroAssento + " atualizado para " + nome);
+                    System.out.println(vooSelecionado);
+                }
+            }
+
+            Passageiro p = new Passageiro(voo, textNome.getText(), textCpf.getText(), (int) numIdade.getValue(),
                     textEmail.getText(), poutrona);
+            
+            vooSelecionado.addPassagensPendentes(p);
+            PainelAcentos.revalidate();
+            PainelAcentos.repaint();
 
-            System.out.println(p);
         });
 
         JButton cancelar = new JButton("Cancelar");
@@ -182,7 +211,7 @@ public class AdicionarPassagem extends JFrame {
         add(btnSalvarCancelar);
 
         cancelar.addActionListener(e -> {
-            abrirTela(new PainelPrincipal(voos));
+            abrirTela(new PainelPrincipal(voos, checkIn));
         });
 
         // setVisible(true);

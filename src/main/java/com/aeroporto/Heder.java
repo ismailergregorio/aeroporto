@@ -1,6 +1,10 @@
 package com.aeroporto;
 
 import javax.swing.*;
+
+import com.aeroporto.Dados.Colors;
+import com.aeroporto.Dados.Dados;
+
 import java.awt.*;
 
 public class Heder{
@@ -30,7 +34,7 @@ public class Heder{
   PainelStatus.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
 
   // Imagem à esquerda
-  ImageIcon icone = new ImageIcon("src\\main\\java\\com\\aeroporto\\image.png");
+  ImageIcon icone = new ImageIcon("src\\main\\java\\com\\aeroporto\\Dados\\image.png");
   Image img = icone.getImage().getScaledInstance(90, 50, Image.SCALE_SMOOTH);
   JLabel labelImagem = new JLabel(new ImageIcon(img));
   PainelStatus.add(labelImagem, BorderLayout.WEST);

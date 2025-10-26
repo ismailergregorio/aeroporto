@@ -1,12 +1,17 @@
-package com.aeroporto;
+package com.aeroporto.Voos;
 
 import javax.swing.*;
+
+import com.aeroporto.PainelPrincipal;
+import com.aeroporto.Dados.Colors;
+import com.aeroporto.Dados.Dados;
+
 import java.awt.*;
 
 public class AdicionarVoo extends JFrame {
     Colors cor = new Colors();
 
-    public AdicionarVoo(Dados voos) {
+    public AdicionarVoo(Dados voos,Dados checkIn) {
 
         String titulo = "Adicionar Voo";
         setTitle(titulo);
@@ -159,7 +164,7 @@ public class AdicionarVoo extends JFrame {
         btnSalvarCancelar.add(cancelar);
 
         cancelar.addActionListener(e -> {
-            abrirTela(voos);
+            abrirTela(voos,checkIn);
         });
 
         add(formularioCadastroVoo);
@@ -168,8 +173,8 @@ public class AdicionarVoo extends JFrame {
 
     }
 
-    private void abrirTela(Dados voos) {
+    private void abrirTela(Dados voos, Dados checkIn ) {
         dispose();
-        new PainelPrincipal(voos);
+        new PainelPrincipal(voos,checkIn);
     }
 }

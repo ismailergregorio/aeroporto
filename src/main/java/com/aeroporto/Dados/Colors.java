@@ -1,4 +1,4 @@
-package com.aeroporto;
+package com.aeroporto.Dados;
 
 import java.awt.Color;
 
