@@ -1,19 +1,27 @@
 package com.aeroporto.Passagens;
 
-import java.util.ArrayList;
-
 import com.aeroporto.Voos.Voo;
 
 public class Passageiro {
+    // Referência ao voo que o passageiro vai embarcar
     private Voo voo;
+
+    // Dados pessoais do passageiro
     private String nome;
     private String cpf;
     private int idade;
     private String email;
+
+    // Número do assento escolhido pelo passageiro
     private String acento;
+
+    // Status da compra: "aguardando", "confirmada", "cancelada"
     private String statusDeCompra = "aguardando";
+
+    // Status do check-in: "aguardando" ou "realizado"
     private String checkInRelisado = "aguardando";
 
+    // Construtor principal, inicializa os dados do passageiro e o voo
     public Passageiro(Voo voo, String nome, String cpf, int idade, String email, String acento) {
         this.voo = voo;
         this.nome = nome;
@@ -21,16 +29,9 @@ public class Passageiro {
         this.idade = idade;
         this.email = email;
         this.acento = acento;
-        System.out.println(voo.getAssentos());
-        int indice = Integer.parseInt(acento) - 1;
-        ArrayList<String> assentos = voo.getAssentos();
-
-        if ("disponivel".equals(assentos.get(indice))) { // compara valor corretamente
-            assentos.set(indice, nome);
-            voo.setAssentos(assentos);
-            System.out.println(voo.getAssentos());
-        }
     }
+
+    // Getters e Setters para acesso e alteração dos campos
 
     public Voo getVoo() {
         return voo;
@@ -96,7 +97,8 @@ public class Passageiro {
         this.checkInRelisado = checkInRelisado;
     }
 
-    // Sobrescrevendo toString para facilitar impressão
+    // Sobrescrevendo toString para facilitar debug e exibição de informações do
+    // passageiro
     @Override
     public String toString() {
         return "Passageiro {" +
@@ -108,5 +110,4 @@ public class Passageiro {
                 ", Assento='" + acento + '\'' +
                 '}';
     }
-
 }

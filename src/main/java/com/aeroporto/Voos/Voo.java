@@ -13,9 +13,15 @@ public class Voo {
   private String horarioPartida;
   private String horarioChegada;
   private int quantidade;
+
+  // Lista de assentos do voo, armazenando o status "disponivel" ou outro
   private ArrayList<String> assentos = new ArrayList<>();
+
+  // Lista de passageiros que fizeram reserva, mas ainda não foram confirmados
   private LinkedList<Passageiro> reservasPendentes = new LinkedList<>();
-  private Stack<Passageiro>checkIn = new Stack<>();
+
+  // Pilha de passageiros que já fizeram check-in
+  private Stack<Passageiro> checkIn = new Stack<>();
 
   public Stack<Passageiro> getCheckIn() {
     return checkIn;
@@ -26,9 +32,10 @@ public class Voo {
   }
 
   public Voo() {
-
+    // Construtor padrão
   }
 
+  // Construtor principal do voo
   public Voo(String numero, String origem, String destino, String horarioPartida, String horarioChegada,
       int quantidade) {
     this.numero = numero;
@@ -38,6 +45,7 @@ public class Voo {
     this.horarioChegada = horarioChegada;
     this.quantidade = quantidade;
 
+    // Inicializa todos os assentos como "disponivel"
     ArrayList<String> assentos = new ArrayList<>();
     for (int x = 0; x < quantidade; x++) {
       assentos.add("disponivel");
@@ -109,13 +117,14 @@ public class Voo {
     this.reservasPendentes = reservasPendentes;
   }
 
+  // Adiciona um passageiro à lista de reservas pendentes
   public void addPassagensPendentes(Passageiro p) {
     reservasPendentes.add(p);
-
   }
 
   @Override
   public String toString() {
+    // Retorna uma representação textual completa do voo, útil para debug
     return "Voo{" +
         "numero='" + numero + '\'' +
         ", origem='" + origem + '\'' +

@@ -10,7 +10,14 @@ public class Colors {
  private Color cinza = new Color(210, 210, 210);
  private Color cinzaEscuro = new Color(153, 153, 153);
  private Color branco = new Color(255, 255, 255);
+ private Color Laranja = new Color(250, 163, 87);
  
+ public Color getLaranja() {
+  return Laranja;
+ }
+ public void setLaranja(Color laranja) {
+  Laranja = laranja;
+ }
  public Color getBranco() {
   return branco;
  }

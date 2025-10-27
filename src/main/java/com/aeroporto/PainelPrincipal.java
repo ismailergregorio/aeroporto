@@ -17,7 +17,8 @@ public class PainelPrincipal extends JFrame {
     Colors cor = new Colors();
 
     public PainelPrincipal(Dados voos, Dados checkIn) {
-        setTitle("Painel de Voo");
+        String titulo = "Painel de Voo";
+        setTitle(titulo);
         setSize(400, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -27,22 +28,21 @@ public class PainelPrincipal extends JFrame {
         getContentPane().setBackground(cor.getAzulFundo());
 
         // Título
-        JLabel titulo = new JLabel("PAINEL DE VOO", SwingConstants.CENTER);
-        titulo.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        titulo.setBackground(cor.getAzulTopo());
-        titulo.setForeground(Color.WHITE);
-        titulo.setOpaque(true);
-        titulo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60)); // largura expansível, altura fixa
-        titulo.setAlignmentX(Component.CENTER_ALIGNMENT); // centraliza horizontalmente
+        JLabel Titulo = new JLabel(titulo, SwingConstants.CENTER);
+        Titulo.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        Titulo.setBackground(cor.getAzulTopo());
+        Titulo.setForeground(Color.WHITE);
+        Titulo.setOpaque(true);
+        Titulo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60)); // largura expansível, altura fixa
+        Titulo.setAlignmentX(Component.CENTER_ALIGNMENT); // centraliza horizontalmente
 
         add(Box.createVerticalStrut(2));
-        add(titulo);
+        add(Titulo);
         add(Box.createVerticalStrut(2));
 
         JPanel PainelStatus = new JPanel(new BorderLayout());
         PainelStatus.setPreferredSize(new Dimension(350, 45));
         PainelStatus.setMaximumSize(new Dimension(350, 45));
-        // PainelStatus.setBackground(verde);
         PainelStatus.setOpaque(true);
         PainelStatus.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -57,13 +57,28 @@ public class PainelPrincipal extends JFrame {
 
         // Painel de status (com grid)
         JPanel statusPanel = new JPanel(new GridLayout(2, 2, 15, 5));
-        // statusPanel.setBackground(azulFundo);
 
         JLabel textDisponivel = new JLabel("Disponível:");
         JLabel Disponivel = new JLabel("0");
-        Disponivel.setText(Integer.toString(voos.listarVoosDisponivel()));
+
+        int indisponivel = 0;
+        for (Voo v : voos.listarVoos()) {
+            int cont = 0;
+            for (String vaga : v.getAssentos()) {
+                if (vaga.equals("disponivel")) {
+                    cont++;
+                }
+            }
+            // Se o voo estiver totalmente cheio (nenhum assento disponível)
+            if (cont == 0) {
+                indisponivel++;
+            }
+        }
         JLabel textIndisponivel = new JLabel("Indisponível:");
         JLabel Indisponivel = new JLabel("0");
+        
+        Indisponivel.setText(Integer.toString(indisponivel));
+        Disponivel.setText(Integer.toString(voos.listarVoosDisponivel()-indisponivel));
 
         statusPanel.add(textDisponivel);
         statusPanel.add(Disponivel);
@@ -164,9 +179,19 @@ public class PainelPrincipal extends JFrame {
             }
 
             String t = "N°:" + v.getNumero() + " | Origem: " + v.getOrigem() + " | Destino: " + v.getDestino()
-                    + " | Acentos:" + acentosDisponivel + "/" + acentosOcupado;
+                    + " | Acentos: disp:" + acentosOcupado + "/ indi:" + (acentosDisponivel - acentosOcupado);
             JLabel text = new JLabel(t);
-            text.setBackground(cor.getCinza());
+
+            if (acentosOcupado > 3) {
+                text.setBackground(cor.getVerde()); // mais de 3 assentos livres
+            } else if (acentosOcupado == 3 || acentosOcupado == 2) {
+                text.setBackground(cor.getLaranja()); // 2 ou 3 assentos livres
+            } else if (acentosOcupado == 1) {
+                text.setBackground(cor.getVermelho()); // apenas 1 assento livre
+            } else {
+                text.setBackground(cor.getVermelho()); // cheio (0 ou negativo)
+            }
+
             text.setPreferredSize(new Dimension(345, 23));
             text.setMaximumSize(new Dimension(345, 23));
             text.setOpaque(true);

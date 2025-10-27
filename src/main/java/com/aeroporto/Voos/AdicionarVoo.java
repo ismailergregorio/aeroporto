@@ -1,88 +1,99 @@
 package com.aeroporto.Voos;
 
 import javax.swing.*;
-
 import com.aeroporto.PainelPrincipal;
 import com.aeroporto.Dados.Colors;
 import com.aeroporto.Dados.Dados;
-
 import java.awt.*;
 
 public class AdicionarVoo extends JFrame {
-    Colors cor = new Colors();
+    Colors cor = new Colors(); // Classe que armazena cores padrão
 
-    public AdicionarVoo(Dados voos,Dados checkIn) {
-
+    public AdicionarVoo(Dados voos, Dados checkIn) {
         String titulo = "Adicionar Voo";
         setTitle(titulo);
         setSize(400, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        // BoxLayout vertical
+        // Layout vertical para empilhar componentes
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         getContentPane().setBackground(cor.getAzulFundo());
 
+        // Título da tela
         JLabel Titulo = new JLabel(titulo, SwingConstants.CENTER);
         Titulo.setFont(new Font("Segoe UI", Font.BOLD, 20));
         Titulo.setBackground(cor.getAzulTopo());
         Titulo.setForeground(Color.WHITE);
         Titulo.setOpaque(true);
-        Titulo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60)); // largura expansível, altura fixa
-        Titulo.setAlignmentX(Component.CENTER_ALIGNMENT); // centraliza horizontalmente
-
+        Titulo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
+        Titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(Box.createVerticalStrut(2));
         add(Titulo);
         add(Box.createVerticalStrut(2));
 
+        // Painel de status com imagem e informações de voos disponíveis/indisponíveis
         JPanel PainelStatus = new JPanel(new BorderLayout());
         PainelStatus.setPreferredSize(new Dimension(350, 45));
         PainelStatus.setMaximumSize(new Dimension(350, 45));
-        // PainelStatus.setBackground(verde);
         PainelStatus.setOpaque(true);
         PainelStatus.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Espaçamento interno
         PainelStatus.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
 
-        // Imagem à esquerda
-        ImageIcon icone = new ImageIcon("src\\main\\java\\com\\aeroporto\\image.png");
+        // Imagem representativa do status
+        ImageIcon icone = new ImageIcon("src\\main\\java\\com\\aeroporto\\Dados\\image.png");
         Image img = icone.getImage().getScaledInstance(90, 50, Image.SCALE_SMOOTH);
         JLabel labelImagem = new JLabel(new ImageIcon(img));
         PainelStatus.add(labelImagem, BorderLayout.WEST);
 
-        // Painel de status (com grid)
+        // Painel interno para mostrar voos disponíveis e indisponíveis
         JPanel statusPanel = new JPanel(new GridLayout(2, 2, 15, 5));
-        // statusPanel.setBackground(azulFundo);
 
         JLabel textDisponivel = new JLabel("Disponível:");
+        JLabel Disponivel = new JLabel("0");
+        Disponivel.setText(Integer.toString(voos.listarVoosDisponivel()));
 
-        JLabel Disponivel = new JLabel(Integer.toString(voos.listarVoosDisponivel()));
+        // Contagem de voos totalmente indisponíveis
+        int indisponivel = 0;
+        for (Voo v : voos.listarVoos()) {
+            int cont = 0;
+            for (String vaga : v.getAssentos()) {
+                if (vaga.equals("disponivel")) {
+                    cont++;
+                }
+            }
+            // Se todos os assentos do voo estão ocupados
+            if (cont == 0) {
+                indisponivel++;
+            }
+        }
+
         JLabel textIndisponivel = new JLabel("Indisponível:");
         JLabel Indisponivel = new JLabel("0");
+        Indisponivel.setText(Integer.toString(indisponivel));
 
+        // Adiciona labels ao painel de status
         statusPanel.add(textDisponivel);
         statusPanel.add(Disponivel);
         statusPanel.add(textIndisponivel);
         statusPanel.add(Indisponivel);
 
-        // Painel auxiliar para alinhar à direita
+        // Container para alinhar o painel de status à direita
         JPanel containerDireita = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        // containerDireita.setBackground(cinza);
         containerDireita.add(statusPanel);
         PainelStatus.add(Box.createHorizontalGlue());
         labelImagem.setAlignmentY(Component.CENTER_ALIGNMENT);
         statusPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        // Adiciona à direita do painel principal
         PainelStatus.add(containerDireita, BorderLayout.CENTER);
-
         add(PainelStatus);
         add(Box.createVerticalStrut(2));
 
+        // Painel do formulário de cadastro do voo
         JPanel formularioCadastroVoo = new JPanel(new FlowLayout(FlowLayout.LEFT));
         formularioCadastroVoo.setPreferredSize(new Dimension(350, 150));
         formularioCadastroVoo.setMaximumSize(new Dimension(350, 150));
 
+        // Campos de entrada do voo
         JLabel labNumeroVoo = new JLabel("N° Voo:");
         labNumeroVoo.setPreferredSize(new Dimension(100, 15));
         JTextField textNumeroVoo = new JTextField(20);
@@ -92,38 +103,34 @@ public class AdicionarVoo extends JFrame {
         JLabel labOrigem = new JLabel("Origem:");
         labOrigem.setPreferredSize(new Dimension(100, 15));
         JTextField textOrigem = new JTextField(20);
-
         formularioCadastroVoo.add(labOrigem);
         formularioCadastroVoo.add(textOrigem);
 
         JLabel labDestino = new JLabel("Destino:");
         labDestino.setPreferredSize(new Dimension(100, 15));
         JTextField textDestino = new JTextField(20);
-
         formularioCadastroVoo.add(labDestino);
         formularioCadastroVoo.add(textDestino);
 
         JLabel labHorarioPartida = new JLabel("Horario de Partida:");
         labHorarioPartida.setPreferredSize(new Dimension(100, 15));
         JTextField textHorarioPartida = new JTextField(20);
-
         formularioCadastroVoo.add(labHorarioPartida);
         formularioCadastroVoo.add(textHorarioPartida);
 
         JLabel labHorarioChegada = new JLabel("Horario de Chegada:");
         labHorarioChegada.setPreferredSize(new Dimension(100, 15));
         JTextField textHorarioChegada = new JTextField(20);
-
         formularioCadastroVoo.add(labHorarioChegada);
         formularioCadastroVoo.add(textHorarioChegada);
 
         JLabel labQuantidadePassageiros = new JLabel("Quantidade Passageiros:");
         labQuantidadePassageiros.setPreferredSize(new Dimension(100, 15));
         JSpinner numQuantidadePassageiros = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 1));
-
         formularioCadastroVoo.add(labQuantidadePassageiros);
         formularioCadastroVoo.add(numQuantidadePassageiros);
 
+        // Painel com botões Salvar e Cancelar
         JPanel btnSalvarCancelar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnSalvarCancelar.setPreferredSize(new Dimension(350, 45));
         btnSalvarCancelar.setMaximumSize(new Dimension(350, 45));
@@ -131,8 +138,8 @@ public class AdicionarVoo extends JFrame {
         JButton salvar = new JButton("Salvar");
         btnSalvarCancelar.add(salvar);
 
+        // Evento do botão Salvar
         salvar.addActionListener(e -> {
-            // String valor = Integer.toString(numQuantidadePassageiros.getValue());
             String numero = textNumeroVoo.getText();
             String origem = textOrigem.getText();
             String destino = textDestino.getText();
@@ -140,7 +147,7 @@ public class AdicionarVoo extends JFrame {
             String chegada = textHorarioChegada.getText();
             int quantidade = (int) numQuantidadePassageiros.getValue();
 
-            // Verificação
+            // Validação dos campos do formulário
             if (numero.isBlank() || origem.isBlank() || destino.isBlank() ||
                     partida.isBlank() || chegada.isBlank() || quantidade <= 0) {
 
@@ -148,33 +155,34 @@ public class AdicionarVoo extends JFrame {
                         "Por favor, preencha todos os campos corretamente.",
                         "Campos obrigatórios",
                         JOptionPane.WARNING_MESSAGE);
-                return; // interrompe o método, não cria o voo
+                return; // Interrompe se algum campo não estiver preenchido
             }
 
-            Voo voo = new Voo(textNumeroVoo.getText(), textOrigem.getText(), textDestino.getText(),
-                    textHorarioPartida.getText(), textHorarioChegada.getText(), quantidade);
-
+            // Cria novo voo e adiciona à lista de voos
+            Voo voo = new Voo(numero, origem, destino, partida, chegada, quantidade);
             voos.adicionarVoos(voo);
+
+            // Atualiza status de voos disponíveis
             voos.listarVoos();
             Disponivel.setText(Integer.toString(voos.listarVoosDisponivel()));
-
         });
 
         JButton cancelar = new JButton("Cancelar");
         btnSalvarCancelar.add(cancelar);
 
+        // Evento do botão Cancelar: fecha tela e abre PainelPrincipal
         cancelar.addActionListener(e -> {
-            abrirTela(voos,checkIn);
+            abrirTela(voos, checkIn);
         });
 
         add(formularioCadastroVoo);
         add(Box.createVerticalStrut(5));
         add(btnSalvarCancelar);
-
     }
 
-    private void abrirTela(Dados voos, Dados checkIn ) {
+    // Método auxiliar para abrir a tela principal e fechar esta
+    private void abrirTela(Dados voos, Dados checkIn) {
         dispose();
-        new PainelPrincipal(voos,checkIn);
+        new PainelPrincipal(voos, checkIn);
     }
 }
